@@ -1,0 +1,64 @@
+.ticket-status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.status-open {
+    background-color: #e3f2fd;
+    color: #0d47a1;
+}
+
+.status-in_progress {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.status-resolved {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+}
+
+.status-closed {
+    background-color: #f5f5f5;
+    color: #616161;
+}
+
+.dashboard-card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: transform 0.2s;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+}
+
+.dashboard-card.primary {
+    background-color: #e3f2fd;
+}
+
+.dashboard-card.warning {
+    background-color: #fff3e0;
+}
+
+.dashboard-card.success {
+    background-color: #e8f5e9;
+}
+
+.dashboard-card.danger {
+    background-color: #ffebee;
+}
+
+.avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: #e3f2fd;
+    color: #1976d2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+} 

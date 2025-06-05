@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title th:text="${'Ticket #' + ticket.id}">Detalles del Ticket</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h3 mb-0">
+                    <span th:text="${'Ticket #' + ticket.id}"></span>
+                    <span th:class="${'badge ms-2 bg-' + (ticket.status == 'OPEN' ? 'danger' : 
+                                                        ticket.status == 'IN_PROGRESS' ? 'warning' : 
+                                                        ticket.status == 'RESOLVED' ? 'success' : 'secondary')}"
+                          th:text="${ticket.status}">
+                    </span>
+                </h1>
+                <p class="text-muted" th:text="${ticket.title}"></p>
+            </div>
+            <div class="d-flex gap-2">
+                <a th:href="@{/tickets/{id}/edit(id=${ticket.id})}" class="btn btn-warning">
+                    <i class="fas fa-edit me-2"></i>Editar
+                </a>
+                <form th:action="@{/tickets/{id}(id=${ticket.id})}" method="post" class="d-inline">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn btn-danger" 
+                            onclick="return confirm('¿Estás seguro de eliminar este ticket?')">
+                        <i class="fas fa-trash me-2"></i>Eliminar
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-alt me-2"></i>Descripción
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0" th:text="${ticket.description}"></p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments me-2"></i>Comentarios
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4" th:each="comment : ${comments}" th:if="${comments != null && !comments.empty}">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar">
+                                        <span th:text="${#strings.substring(comment.createdBy.name,0,1)}"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0" th:text="${comment.createdBy.name}"></h6>
+                                        <small class="text-muted" th:text="${#temporals.format(comment.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+                                    </div>
+                                    <p class="mb-0 mt-2" th:text="${comment.content}"></p>
+                                </div>
+                            </div>
+                            <hr th:if="${!commentStat.last}">
+                        </div>
+
+                        <div th:if="${comments == null || comments.empty}" class="text-center py-4">
+                            <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                            <h5>No hay comentarios</h5>
+                            <p class="text-muted">Sé el primero en comentar</p>
+                        </div>
+
+                        <form th:action="@{/tickets/{id}/comments(id=${ticket.id})}" method="post" class="mt-4">
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Nuevo Comentario</label>
+                                <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Enviar Comentario
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Detalles
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Creado por</small>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar me-2">
+                                        <span th:text="${#strings.substring(ticket.createdBy.name,0,1)}"></span>
+                                    </div>
+                                    <span th:text="${ticket.createdBy.name}"></span>
+                                </div>
+                            </li>
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Fecha de creación</small>
+                                <span th:text="${#temporals.format(ticket.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                            </li>
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Última actualización</small>
+                                <span th:text="${#temporals.format(ticket.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                            </li>
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Categoría</small>
+                                <span th:text="${ticket.category}"></span>
+                            </li>
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Prioridad</small>
+                                <span th:class="${'badge bg-' + (#strings.toLowerCase(ticket.priority.name()) == 'high' ? 'danger' : 
+                                                               #strings.toLowerCase(ticket.priority.name()) == 'medium' ? 'warning' : 'info')}"
+                                      th:text="${ticket.priority}">
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>Historial
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item" th:each="history : ${ticket.history}">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted" th:text="${#temporals.format(history.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+                                    <span th:text="${history.user.name}"></span>
+                                </div>
+                                <p class="mb-0 mt-1" th:text="${history.description}"></p>
+                            </div>
+                        </div>
+                        <div th:if="${#lists.isEmpty(ticket.history)}" class="text-center py-4">
+                            <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                            <h5>No hay historial</h5>
+                            <p class="text-muted">No se han realizado cambios</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

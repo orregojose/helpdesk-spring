@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title th:text="${ticket.id == null ? 'Nuevo Ticket' : 'Editar Ticket'}">Ticket</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h3 mb-0" th:text="${ticket.id == null ? 'Nuevo Ticket de Soporte' : 'Editar Ticket #' + ticket.id}">Ticket</h1>
+                <p class="text-muted" th:text="${ticket.id == null ? 'Crear un nuevo ticket de soporte' : 'Modificar ticket existente'}"></p>
+            </div>
+            <a href="/tickets" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Volver a Tickets
+            </a>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <span th:text="${errorMessage}"></span>
+                        </div>
+
+                        <form th:action="@{${ticket.id == null ? '/tickets' : '/tickets/' + ticket.id}}" 
+                            th:method="${ticket.id == null ? 'post' : 'put'}"
+                            th:object="${ticket}">
+                            
+                            <!-- Título y descripción (solo lectura si es edición) -->
+                            <div class="mb-4">
+                                <label for="title" class="form-label">
+                                    <i class="fas fa-heading me-2"></i>Título
+                                </label>
+                                <input type="text" class="form-control" id="title" th:field="*{title}" 
+                                    th:readonly="${ticket.id != null}"
+                                    th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" required>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="description" class="form-label">
+                                    <i class="fas fa-align-left me-2"></i>Descripción
+                                </label>
+                                <textarea class="form-control" id="description" th:field="*{description}" 
+                                        th:readonly="${ticket.id != null}"
+                                        th:classappend="${#fields.hasErrors('description')} ? 'is-invalid'" rows="5" required></textarea>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                            </div>
+
+                            <!-- Estado y Prioridad (solo visibles en edición) -->
+                            <div class="row" th:if="${ticket.id != null}">
+                                <div class="col-md-6">
+                                    <div class="mb-4">
+                                        <label for="status" class="form-label">
+                                            <i class="fas fa-tasks me-2"></i>Estado
+                                        </label>
+                                        <select class="form-select" id="status" th:field="*{status}">
+                                            <option value="OPEN">Abierto</option>
+                                            <option value="IN_PROGRESS">En Progreso</option>
+                                            <option value="RESOLVED">Resuelto</option>
+                                            <option value="CLOSED">Cerrado</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-4">
+                                        <label for="priority" class="form-label">
+                                            <i class="fas fa-flag me-2"></i>Prioridad
+                                        </label>
+                                        <select class="form-select" id="priority" th:field="*{priority}">
+                                            <option value="LOW">Baja</option>
+                                            <option value="MEDIUM">Media</option>
+                                            <option value="HIGH">Alta</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Categoría (solo visible en creación) -->
+                            <div class="mb-4" th:if="${ticket.id == null}">
+                                <label for="category" class="form-label">
+                                    <i class="fas fa-tag me-2"></i>Categoría
+                                </label>
+                                <select class="form-select" id="category" th:field="*{category}" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <option value="HARDWARE">Hardware</option>
+                                    <option value="SOFTWARE">Software</option>
+                                    <option value="NETWORK">Red</option>
+                                    <option value="OTHER">Otro</option>
+                                </select>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="/tickets" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-2"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save me-2"></i>
+                                    <span th:text="${ticket.id == null ? 'Crear Ticket' : 'Guardar Cambios'}"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Sección de comentarios (solo visible en edición) -->
+                <div class="card" th:if="${ticket.id != null}">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments me-2"></i>Comentarios
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Lista de comentarios existentes -->
+                        <div class="mb-4" th:each="comment : ${comments}" th:if="${comments != null && !comments.empty}">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0">
+                                    <div class="avatar">
+                                        <span th:text="${#strings.substring(comment.createdBy.name,0,1)}"></span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0" th:text="${comment.createdBy.name}"></h6>
+                                        <small class="text-muted" th:text="${#temporals.format(comment.createdAt, 'dd/MM/yyyy HH:mm')}"></small>
+                                    </div>
+                                    <p class="mb-0 mt-2" th:text="${comment.content}"></p>
+                                </div>
+                            </div>
+                            <hr th:if="${!commentStat.last}">
+                        </div>
+
+                        <!-- Mensaje cuando no hay comentarios -->
+                        <div th:if="${comments == null || comments.empty}" class="text-center py-4">
+                            <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                            <h5>No hay comentarios</h5>
+                            <p class="text-muted">Sé el primero en comentar</p>
+                        </div>
+
+                        <!-- Formulario para nuevo comentario -->
+                        <form th:action="@{/tickets/{id}/comments(id=${ticket.id})}" method="post" class="mt-4">
+                            <div class="mb-3">
+                                <label for="content" class="form-label">Nuevo Comentario</label>
+                                <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Enviar Comentario
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel lateral con información del ticket -->
+            <div class="col-md-4" th:if="${ticket.id != null}">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>Información del Ticket
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Creado por</small>
+                                <div class="d-flex align-items-center">
+                                    <div class="avatar me-2">
+                                        <span th:text="${#strings.substring(ticket.createdBy.name,0,1)}"></span>
+                                    </div>
+                                    <span th:text="${ticket.createdBy.name}"></span>
+                                </div>
+                            </li>
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Fecha de creación</small>
+                                <span th:text="${#temporals.format(ticket.createdAt, 'dd/MM/yyyy HH:mm')}"></span>
+                            </li>
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Última actualización</small>
+                                <span th:text="${#temporals.format(ticket.updatedAt, 'dd/MM/yyyy HH:mm')}"></span>
+                            </li>
+                            <li class="mb-3">
+                                <small class="text-muted d-block">Categoría</small>
+                                <span th:text="${ticket.category}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

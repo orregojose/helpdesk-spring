@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Tickets</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Tickets</h2>
+            <a href="/tickets/new" class="btn btn-primary">Create New Ticket</a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div th:if="${tickets.empty}" class="alert alert-info">
+                    No tickets found.
+                </div>
+                <div th:unless="${tickets.empty}" class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Status</th>
+                                <th>Created By</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="ticket : ${tickets}">
+                                <td th:text="${ticket.id}"></td>
+                                <td th:text="${ticket.title}"></td>
+                                <td>
+                                    <span th:class="${'badge ' + 
+                                        (ticket.status == 'OPEN' ? 'bg-danger' : 
+                                        (ticket.status == 'IN_PROGRESS' ? 'bg-warning' : 'bg-success'))}"
+                                        th:text="${ticket.status}">
+                                    </span>
+                                </td>
+                                <td th:text="${ticket.user.fullName}"></td>
+                                <td th:text="${#temporals.format(ticket.createdAt, 'dd-MM-yyyy HH:mm')}"></td>
+                                <td>
+                                    <a th:href="@{/tickets/{id}(id=${ticket.id})}" class="btn btn-sm btn-info">View</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,12 @@
+com\sena\helpdesk\config\SecurityConfig.class
+com\sena\helpdesk\model\Ticket.class
+com\sena\helpdesk\model\User.class
+com\sena\helpdesk\repository\UserRepository.class
+com\sena\helpdesk\controller\WellKnownController.class
+com\sena\helpdesk\controller\TicketController.class
+com\sena\helpdesk\repository\TicketRepository.class
+com\sena\helpdesk\config\PasswordConfig.class
+com\sena\helpdesk\model\Ticket$TicketPriority.class
+com\sena\helpdesk\model\Ticket$TicketCategory.class
+com\sena\helpdesk\controller\HomeController.class
+com\sena\helpdesk\model\Ticket$TicketStatus.class

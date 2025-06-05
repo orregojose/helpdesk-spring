@@ -1,0 +1,17 @@
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\controller\HomeController.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\repository\TicketRepository.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\controller\AuthController.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\controller\ErrorController.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\model\Ticket.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\service\TicketService.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\HelpdeskApplication.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\repository\UserRepository.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\service\UserService.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\config\PasswordConfig.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\controller\TicketController.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\model\Comment.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\controller\WellKnownController.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\model\User.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\config\WebConfig.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\config\SecurityConfig.java
+C:\SENA\HELPDESK-SPRING2\src\main\java\com\sena\helpdesk\repository\CommentRepository.java

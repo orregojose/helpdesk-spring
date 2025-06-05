@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/base}">
+<head>
+    <title>Help Desk - Inicio</title>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="container">
+            <div class="text-center py-5">
+                <i class="fas fa-headset fa-4x text-primary mb-4"></i>
+                <h1 class="display-4">Bienvenido al Help Desk</h1>
+                <p class="lead text-muted">Sistema de gestión de tickets de soporte técnico</p>
+                <div class="mt-5">
+                    <a href="/login" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
+                    </a>
+                    <a href="/register" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-user-plus me-2"></i>Registrarse
+                    </a>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-tasks fa-3x text-primary mb-3"></i>
+                        <h3>Gestión de Tickets</h3>
+                        <p class="text-muted">Crea y gestiona tickets de soporte de manera eficiente</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                        <h3>Seguimiento</h3>
+                        <p class="text-muted">Monitorea el estado y progreso de tus tickets</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <i class="fas fa-users fa-3x text-primary mb-3"></i>
+                        <h3>Colaboración</h3>
+                        <p class="text-muted">Trabaja en equipo para resolver incidencias</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
